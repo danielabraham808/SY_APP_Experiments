@@ -1,44 +1,84 @@
-def knapsack(weights, profits, capacity):
-    n = len(weights)
-    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+# Experiment 5
+# Longest Common Subsequence (LCS)
+# Using Dynamic Programming
 
-    # Build DP table
-    for i in range(1, n + 1):
-        for w in range(capacity + 1):
+def lcs(X, Y):
 
-            # If item is too heavy, exclude it
-            if weights[i - 1] > w:
-                dp[i][w] = dp[i - 1][w]
+    # Find the length of both strings
+    m = len(X)
+    n = len(Y)
+
+    # Create a DP table
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Fill the DP table
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+
+            # If characters are same
+            if X[i - 1] == Y[j - 1]:
+
+                # Take diagonal value and add 1
+                dp[i][j] = dp[i - 1][j - 1] + 1
 
             else:
-                dp[i][w] = max(
-                    dp[i - 1][w],
-                    profits[i - 1] + dp[i - 1][w - weights[i - 1]]
-                )
 
-    # Find selected items
-    w = capacity
-    selected_items = []
+                # Take maximum of top and left cell
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
 
-    for i in range(n, 0, -1):
+    # Start from bottom-right corner
+    i = m
+    j = n
 
-        # If the value changed, the item was included
-        if dp[i][w] != dp[i - 1][w]:
-            selected_items.append(i - 1)
-            w -= weights[i - 1]
+    # List to store the LCS characters
+    result = []
 
-    # Get items in order
-    selected_items.reverse()
+    # Backtracking to find the actual LCS
+    while i > 0 and j > 0:
 
-    return dp[n][capacity], selected_items
+        # If characters match
+        if X[i - 1] == Y[j - 1]:
+
+            result.append(X[i - 1])
+
+            # Move diagonally
+            i -= 1
+            j -= 1
+
+        # If top cell is greater
+        elif dp[i - 1][j] > dp[i][j - 1]:
+
+            # Move up
+            i -= 1
+
+        else:
+
+            # Move left
+            j -= 1
+
+    # Reverse the result
+    result.reverse()
+
+    # Convert list into a string
+    lcs_string = ''.join(result)
+
+    # Return LCS length and actual LCS
+    return dp[m][n], lcs_string
 
 
-# Example usage
-weights = [3, 2, 4, 5, 1]
-profits = [50, 40, 70, 80, 10]
-capacity = 7
+# --------------------------------
+# Main Program
+# --------------------------------
 
-max_profit, items = knapsack(weights, profits, capacity)
+# Take first string from user
+X = input("Enter first string: ")
 
-print("Maximum Profit:", max_profit)
-print("Items in Knapsack:", items)
+# Take second string from user
+Y = input("Enter second string: ")
+
+# Find LCS
+length, sequence = lcs(X, Y)
+
+# Display result
+print("\nLength of LCS:", length)
+print("Longest Common Subsequence:", sequence)
