@@ -1,6 +1,6 @@
-# -----------------------------
+#-----------------------------
 # Strategy Pattern Example
-# -----------------------------
+#-----------------------------
 
 # Parent Class (Base Strategy)
 class PaymentStrategy:
