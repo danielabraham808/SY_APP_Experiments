@@ -1,0 +1,29 @@
+def replace_word_in_file(file_path, old_word, new_word):
+    try:
+        # Read the contents of the file
+        with open(file_path, "r", encoding="utf-8") as file:
+            content = file.read()
+
+        # Replace all occurrences of the word
+        count = content.count(old_word)
+        updated_content = content.replace(old_word, new_word)
+
+        # Write the updated contents back to the file
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.write(updated_content)
+
+        print(f"Replacement completed successfully!")
+        print(f"Occurrences replaced: {count}")
+
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+    except OSError as e:
+        print(f"File error: {e}")
+
+
+# Example usage
+file_path = "sample.txt"
+old_word = "Python"
+new_word = "Java"
+
+replace_word_in_file(file_path, old_word, new_word)
